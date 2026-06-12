@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart KPI Monitoring Dashboard</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body>
+
+
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">KPI Monitoring System</a>
+
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link active" href="dashboard.html">Dashboard</a>
+            <a class="nav-link" href="kpi.html">KPI Management</a>
+            <a class="nav-link" href="alerts.html">Alerts</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Dashboard Header -->
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">
+        Smart KPI Monitoring Dashboard
+    </h2>
+
+    <!-- KPI Cards -->
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5>Total Sales</h5>
+                    <h3 class="text-success">£8.29M</h3>
+                    <small class="text-muted">Total Revenue Generated</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5>Quantity Ordered</h5>
+                    <h3 class="text-info">99K</h3>
+                    <small class="text-muted">Total Quantity Ordered</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5>Total Customer</h5>
+                    <h3 class="text-primary">2.823K</h3>
+                    <small class="text-muted">Total Customers</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <h5>Total Profit</h5>
+                    <h3 class="text-warning">3.29M</h3>
+                    <small class="text-muted">Total Profit Generated</small> 
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Charts -->
+
+    <div class="row mt-5">
+
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    Power BI KPI Summary
+                </div>
+
+                <div class="card-body">
+                    <canvas id="kpiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="alert alert-danger shadow">
+                <h5>⚠ Performance Alert</h5>
+                <hr>
+                Monthly sales trend indicates declining performance.
+                <br><br>
+
+                <strong>Target:</strong> 10M
+                <br>
+
+                <strong>Current:</strong> 8.29M
+            </div>
+
+            <div class="card shadow mt-3">
+                <div class="card-body">
+                    <h5>System Status</h5>
+
+                    <p>✔ Power BI Dashboard Connected</p>
+                    <p>✔ KPI Monitoring Active</p>
+                    <p>✔ Sales Dataset Loaded</p>
+                    <p>✔ Alert Monitoring Enabled</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+<script>
+
+const ctx = document.getElementById('kpiChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+    'Total Sales',
+    'Total Profit',
+    'Quantity Ordered',
+    'Customers'
+],
+
+
+
+        datasets: [{
+
+            label: 'KPI Performance',
+
+            data: [8290, 3290, 99, 2823],
+
+            borderWidth: 1
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+                beginAtZero: true,
+                
+            }
+        }
+    }
+
+});
+
+</script>
+
+</body>
+</html>
