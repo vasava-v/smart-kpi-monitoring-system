@@ -148,16 +148,42 @@ function addKPI() {
         document.getElementById("department").value;
        
 
-    if(name === "" ||
-       target === "" ||
-       current === "" ||
-       department === "") {
+    // Empty field validation
 
-        alert("Please fill all fields");
+if(name.trim() === "" ||
+   target === "" ||
+   current === "" ||
+   department.trim() === "") {
 
-        return;
+    alert("Please fill all fields");
+    return;
+}
 
-    }
+// Numeric validation
+
+if(Number(target) <= 0) {
+
+    alert("Target value must be greater than 0");
+    return;
+}
+
+if(Number(current) < 0) {
+
+    alert("Current value cannot be negative");
+    return;
+}
+
+// Duplicate KPI validation
+
+let duplicate = kpis.find(
+    kpi => kpi.name.toLowerCase() === name.toLowerCase()
+);
+
+if(duplicate){
+
+    alert("KPI already exists");
+    return;
+}
         let newKPI = {
 
              name,
