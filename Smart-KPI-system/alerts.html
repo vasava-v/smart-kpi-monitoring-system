@@ -47,7 +47,7 @@
             <div class="card shadow text-center">
                 <div class="card-body">
                     <h5>Total Alerts</h5>
-                    <h2 class="text-danger">5</h2>
+                    <h3 id="totalAlerts">0</h3>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
             <div class="card shadow text-center">
                 <div class="card-body">
                     <h5>Critical Alerts</h5>
-                    <h2 class="text-danger">2</h2>
+                    <h3 id="criticalAlerts">0</h3>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <div class="card shadow text-center">
                 <div class="card-body">
                     <h5>Medium Alerts</h5>
-                    <h2 class="text-warning">2</h2>
+<h3 id="mediumAlerts">0</h3>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
             <div class="card shadow text-center">
                 <div class="card-body">
                     <h5>Resolved</h5>
-                    <h2 class="text-success">3</h2>
+                    <h3 id="resolvedAlerts">0</h3>
                 </div>
             </div>
         </div>
@@ -89,9 +89,9 @@
             Active KPI Alerts
         </div>
 
-        <div class="card-body">
+         <div class="card-body">
 
-            <div class="alert alert-danger">
+           <!-- <div class="alert alert-danger">
                 <strong>Critical:</strong>
                 Sales Revenue is below target.
                 Current: £8.29M |
@@ -122,9 +122,9 @@
             <div class="alert alert-info">
                 <strong>Information:</strong>
                 KPI monitoring system completed daily refresh.
-            </div>
-
-        </div>
+            </div> -->
+            <div id="alertsContainer"></div>
+        </div> 
 
     </div>
 
@@ -140,83 +140,21 @@
 
             <table class="table table-striped table-bordered">
 
-                <thead>
+    <thead>
+        <tr>
+            <th>Alert ID</th>
+            <th>KPI</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+    </thead>
 
-                <tr>
-                    <th>Alert ID</th>
-                    <th>KPI</th>
-                    <th>Severity</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
+    <tbody id="alertTableBody">
 
-                </thead>
+    </tbody>
 
-                <tbody>
-
-                <tr>
-                    <td>ALT001</td>
-                    <td>Sales Revenue</td>
-                    <td>
-                        <span class="badge bg-danger">
-                            Critical
-                        </span>
-                    </td>
-                    <td>Active</td>
-                    <td>12/06/2026</td>
-                </tr>
-
-                <tr>
-                    <td>ALT002</td>
-                    <td>Net Profit</td>
-                    <td>
-                        <span class="badge bg-danger">
-                            Critical
-                        </span>
-                    </td>
-                    <td>Active</td>
-                    <td>12/06/2026</td>
-                </tr>
-
-                <tr>
-                    <td>ALT003</td>
-                    <td>Customer Satisfaction</td>
-                    <td>
-                        <span class="badge bg-warning">
-                            Medium
-                        </span>
-                    </td>
-                    <td>Active</td>
-                    <td>12/06/2026</td>
-                </tr>
-
-                <tr>
-                    <td>ALT004</td>
-                    <td>Employee Productivity</td>
-                    <td>
-                        <span class="badge bg-warning">
-                            Medium
-                        </span>
-                    </td>
-                    <td>Active</td>
-                    <td>12/06/2026</td>
-                </tr>
-
-                <tr>
-                    <td>ALT005</td>
-                    <td>Product Orders</td>
-                    <td>
-                        <span class="badge bg-success">
-                            Low
-                        </span>
-                    </td>
-                    <td>Resolved</td>
-                    <td>11/06/2026</td>
-                </tr>
-
-                </tbody>
-
-            </table>
+</table>
 
         </div>
 
@@ -225,5 +163,90 @@
 </div>
 
 </body>
+<script>
+
+const kpis =
+JSON.parse(localStorage.getItem("kpis")) || [];
+
+const alertsContainer =
+document.getElementById("alertsContainer");
+
+const tableBody =
+document.getElementById("alertTableBody");
+
+let totalAlerts = 0;
+let criticalAlerts = 0;
+let mediumAlerts = 0;
+
+let alertId = 1;
+
+kpis.forEach(kpi => {
+
+    let current = Number(kpi.current);
+    let target = Number(kpi.target);
+
+    if(current < target){
+
+        totalAlerts++;
+
+        let percentage =
+        (current / target) * 100;
+
+        let severity = "Medium";
+
+        if(percentage < 80){
+            severity = "Critical";
+            criticalAlerts++;
+        }
+        else{
+            mediumAlerts++;
+        }
+
+        alertsContainer.innerHTML += `
+        <div class="alert ${
+            severity === "Critical"
+            ? "alert-danger"
+            : "alert-warning"
+        }">
+
+            <strong>${severity}:</strong>
+
+            ${kpi.name} is below target.
+
+            Current: ${current}
+
+            Target: ${target}
+
+        </div>
+        `;
+
+        tableBody.innerHTML += `
+        <tr>
+            <td>ALT00${alertId}</td>
+            <td>${kpi.name}</td>
+            <td>${severity}</td>
+            <td>Active</td>
+            <td>${new Date().toLocaleDateString()}</td>
+        </tr>
+        `;
+
+        alertId++;
+    }
+
+});
+
+document.getElementById("totalAlerts").innerText =
+totalAlerts;
+
+document.getElementById("criticalAlerts").innerText =
+criticalAlerts;
+
+document.getElementById("mediumAlerts").innerText =
+mediumAlerts;
+
+document.getElementById("resolvedAlerts").innerText =
+0;
+
+</script>
 </html>
 ```

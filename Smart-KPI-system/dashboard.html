@@ -91,15 +91,53 @@
 
     <div class="row mt-5">
 
-        <div class="col-md-8">
+        <div class="col-md-8 ">
             <div class="card shadow">
+              
                 <div class="card-header">
-                    Power BI KPI Summary
+                    Business Performance Dashboard
                 </div>
+         <div style="height:15px;"></div>
 
-                <div class="card-body">
-                    <canvas id="kpiChart"></canvas>
-                </div>
+                <div class="row">
+
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                Top 5 Customers by Sales
+            </div>
+
+            <div class="card-body">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                Top 5 Customers by Profit
+            </div>
+
+            <div class="card-body">
+                <canvas id="profitChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+        Monthly Sales Trend
+    </div>
+
+    <div class="card-body">
+        <canvas id="monthlyChart"></canvas>
+    </div>
+
+</div>
             </div>
         </div>
 
@@ -137,46 +175,158 @@
 
 <script>
 
-const ctx = document.getElementById('kpiChart');
+const salesCtx =
+document.getElementById("salesChart");
 
-new Chart(ctx, {
+new Chart(salesCtx,{
 
-    type: 'bar',
+type:"bar",
 
-    data: {
+data: {
+    labels: [
+        "Euro Shopping",
+        "Mini Gifts",
+        "La Rochelle",
+        "Australian Collectors",
+        "Souveniers"
+        
+    ],
+    datasets: [{
+        label: "Sales",
+        data: [
+            310000,
+            205000,
+            65000,
+            64000,
+            58000
+        ]
+    }]
+},
 
-        labels: [
-    'Total Sales',
-    'Total Profit',
-    'Quantity Ordered',
-    'Customers'
-],
+options: {
+    indexAxis: 'y',
+    responsive: true,
 
-
-
-        datasets: [{
-
-            label: 'KPI Performance',
-
-            data: [8290, 3290, 99, 2823],
-
-            borderWidth: 1
-
-        }]
-    },
-
-    options: {
-
-        responsive: true,
-
-        scales: {
-
-            y: {
-                beginAtZero: true,
-                
+    scales: {
+        x: {
+            ticks: {
+                callback: function(value) {
+                    return (value / 1000000).toFixed(1) + 'M';
+                }
+            }
+        },
+        y: {
+            ticks: {
+                autoSkip: false
             }
         }
     }
+}
+
+});
+
+const profitCtx =
+document.getElementById("profitChart");
+
+new Chart(profitCtx,{
+
+type:"bar",
+
+data: {
+    labels: [
+        "Euro Shopping",
+        "Mini Gifts",
+        "La Rochelle",
+        "Australian Collectors",
+        "Souveniers",
+        
+    ],
+    datasets: [{
+        label: "Profit",
+        data: [
+            310000,
+            205000,
+            65000,
+            64000,
+            58000
+        ]
+    }]
+},
+
+options: {
+    indexAxis: 'y',
+    responsive: true,
+
+    scales: {
+        x: {
+            ticks: {
+                callback: function(value) {
+                    return (value / 1000000).toFixed(1) + 'M';
+                }
+            }
+        },
+        y: {
+            ticks: {
+                autoSkip: false
+            }
+        }
+    }
+}
+
+});
+
+const monthlyCtx =
+document.getElementById("monthlyChart");
+
+new Chart(monthlyCtx,{
+
+type:"line",
+
+data:{
+
+labels:[
+"Jan",
+"Feb",
+"Mar",
+"Apr",
+"May",
+"Jun",
+"Jul",
+"Aug",
+"Sep",
+"Oct",
+"Nov",
+"Dec"
+],
+
+datasets:[{
+
+label:"Sales",
+
+data:[
+1200000,
+980000,
+940000,
+860000,
+830000,
+810000,
+720000,
+700000,
+680000,
+650000,
+610000,
+580000
+],
+
+fill:false,
+tension:0.3
+
+}]
+},
+
+options:{
+responsive:true
+}
 
 });
 

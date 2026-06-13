@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,23 +109,7 @@
 
                 <tbody id="kpiTable">
 
-                <tr>
-                    <td>Sales Revenue</td>
-                    <td>10000000</td>
-                    <td>8290000</td>
-                    <td>Sales</td>
-                    <td>
-                        <span class="badge bg-danger">
-                            Below Target
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger btn-sm"
-                                onclick="deleteRow(this)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
+                
 
                 </tbody>
 
@@ -138,6 +122,16 @@
 </div>
 
 <script>
+    let kpis =
+    JSON.parse(localStorage.getItem("kpis")) || [];
+    function saveKPIs() {
+
+    localStorage.setItem(
+        "kpis",
+        JSON.stringify(kpis)
+    );
+
+}
 
 function addKPI() {
 
@@ -152,6 +146,7 @@ function addKPI() {
 
     let department =
         document.getElementById("department").value;
+       
 
     if(name === "" ||
        target === "" ||
@@ -161,32 +156,28 @@ function addKPI() {
         alert("Please fill all fields");
 
         return;
+
     }
+        let newKPI = {
+
+             name,
+             target,
+             current,
+             department
+
+                };
+                
+    kpis.push(newKPI);
+
+        saveKPIs();
 
     let status =
-        current >= target
+        Number(current) >= Number(target)
         ? '<span class="badge bg-success">On Target</span>'
         : '<span class="badge bg-danger">Below Target</span>';
 
-    let row = `
-        <tr>
-            <td>${name}</td>
-            <td>${target}</td>
-            <td>${current}</td>
-            <td>${department}</td>
-            <td>${status}</td>
-            <td>
-                <button class="btn btn-danger btn-sm"
-                        onclick="deleteRow(this)">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    `;
-
-    document
-        .getElementById("kpiTable")
-        .innerHTML += row;
+    loadKPIs();
+    saveKPIs();
 
     document.getElementById("kpiName").value = "";
     document.getElementById("targetValue").value = "";
@@ -194,11 +185,51 @@ function addKPI() {
     document.getElementById("department").value = "";
 }
 
-function deleteRow(button) {
+function deleteRow(index){
 
-    button.parentElement.parentElement.remove();
+    kpis.splice(index,1);
+
+    saveKPIs();
+
+    loadKPIs();
+
 }
 
+function loadKPIs() {
+
+    let table =
+    document.getElementById("kpiTable");
+
+    table.innerHTML = "";
+
+    kpis.forEach((kpi,index) => {
+
+        let status =
+        Number(kpi.current) >= Number(kpi.target)
+        ? '<span class="badge bg-success">On Target</span>'
+        : '<span class="badge bg-danger">Below Target</span>';
+
+        table.innerHTML += `
+        <tr>
+            <td>${kpi.name}</td>
+            <td>${kpi.target}</td>
+            <td>${kpi.current}</td>
+            <td>${kpi.department}</td>
+            <td>${status}</td>
+            <td>
+                <button
+                class="btn btn-danger btn-sm"
+                onclick="deleteRow(${index})">
+                Delete
+                </button>
+            </td>
+        </tr>
+        `;
+
+    });
+
+}
+loadKPIs();
 </script>
 
 </body>
